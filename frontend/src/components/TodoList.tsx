@@ -13,10 +13,10 @@ interface TodoListProps {
   todos: Todo[]
   onToggle: (id: string) => void
   onEdit: (id: string, newText: string) => void
-  onDelete: (id: string) => void
+  onDeleteConfirm: (id: string, text: string) => void
 }
 
-export default function TodoList({ todos, onToggle, onEdit, onDelete }: TodoListProps) {
+export default function TodoList({ todos, onToggle, onEdit, onDeleteConfirm }: TodoListProps) {
   const completedCount = todos.filter(todo => todo.completed).length
   const totalCount = todos.length
 
@@ -80,13 +80,13 @@ export default function TodoList({ todos, onToggle, onEdit, onDelete }: TodoList
       {/* Todo items */}
       <div className="space-y-1">
         {sortedTodos.map(todo => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={onToggle}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={onToggle}
+              onEdit={onEdit}
+              onDeleteConfirm={onDeleteConfirm}
+            />
         ))}
       </div>
 

@@ -13,6 +13,7 @@ interface Todo {
 
 export default function HomePage() {
   const [todos, setTodos] = useState<Todo[]>([])
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; text: string } | null>(null)
 
   const handleAddTodo = (text: string) => {
     const newTodo: Todo = {
@@ -42,6 +43,15 @@ export default function HomePage() {
 
   const handleDeleteTodo = (id: string) => {
     setTodos(prev => prev.filter(todo => todo.id !== id))
+    setDeleteConfirm(null)
+  }
+
+  const handleDeleteConfirm = (id: string, text: string) => {
+    setDeleteConfirm({ id, text })
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirm(null)
   }
 
   const completedCount = todos.filter(todo => todo.completed).length
@@ -92,11 +102,39 @@ export default function HomePage() {
         todos={todos}
         onToggle={handleToggleTodo}
         onEdit={handleEditTodo}
-        onDelete={handleDeleteTodo}
+        onDeleteConfirm={handleDeleteConfirm}
       />
 
       {/* Add Todo Form */}
       <TodoForm onAddTodo={handleAddTodo} />
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+          <div className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Delete Todo?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Are you sure you want to delete "{deleteConfirm.text}"? This action cannot be undone.
+            </p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => handleDeleteTodo(deleteConfirm.id)}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+              <button
+                onClick={handleDeleteCancel}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
