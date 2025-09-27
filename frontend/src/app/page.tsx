@@ -14,6 +14,7 @@ interface Todo {
 export default function HomePage() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; text: string } | null>(null)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
 
   const handleAddTodo = (text: string) => {
     const newTodo: Todo = {
@@ -52,6 +53,15 @@ export default function HomePage() {
 
   const handleDeleteCancel = () => {
     setDeleteConfirm(null)
+  }
+
+  const handleReset = () => {
+    setTodos([])
+    setShowResetConfirm(false)
+  }
+
+  const handleResetCancel = () => {
+    setShowResetConfirm(false)
   }
 
   const completedCount = todos.filter(todo => todo.completed).length
@@ -95,6 +105,17 @@ export default function HomePage() {
             Start by adding your first todo to see your garden grow!
           </p>
         )}
+
+        {totalCount > 0 && (
+          <div className="mt-4">
+            <button
+              onClick={() => setShowResetConfirm(true)}
+              className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium"
+            >
+              🌱 Start Fresh
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Todo List */}
@@ -127,6 +148,34 @@ export default function HomePage() {
               </button>
               <button
                 onClick={handleDeleteCancel}
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reset Confirmation Modal */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+          <div className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Start Fresh?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              This will clear all your todos and reset your garden. Are you sure you want to start fresh?
+            </p>
+            <div className="flex space-x-3">
+              <button
+                onClick={handleReset}
+                className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              >
+                🌱 Start Fresh
+              </button>
+              <button
+                onClick={handleResetCancel}
                 className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
               >
                 Cancel
