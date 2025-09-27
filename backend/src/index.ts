@@ -1,5 +1,8 @@
 import { Hono } from 'hono'
 import { createSupabaseClient } from './lib/supabase'
+import { testRoutes } from './routes/test'
+import { authRoutes } from './routes/auth'
+import { userRoutes } from './routes/user'
 
 const app = new Hono()
 
@@ -39,5 +42,10 @@ app.get('/health', async (c) => {
     }, 500)
   }
 })
+
+// Mount routes
+app.route('/test', testRoutes)
+app.route('/auth', authRoutes)
+app.route('/user', userRoutes)
 
 export default app
