@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-green-50 to-blue-50 min-h-screen;
+  }
+}
+
+@layer components {
+  .garden-card {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20;
+  }
+  
+  .todo-item {
+    @apply bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md border border-white/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02];
+  }
+  
+  .growth-stage {
+    @apply transition-all duration-500 ease-in-out;
+  }
+}

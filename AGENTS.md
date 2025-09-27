@@ -1,0 +1,39 @@
+# Cursor Rules for Todo Garden Project
+
+## 🎯 Project Context
+
+This is a Next.js to-do application called "Todo Garden" that uses tree/flower growth visualization instead of traditional progress bars. The user is new to frontend development and needs clear explanations.
+
+## 📋 How to Act
+
+### 🏗️ Architecture & Planning
+
+- Always propose high-level idea first before implementing
+- Keep things simple since this is a small project
+- Document will be put into the docs/ folder
+
+### 💬 Communication Style
+
+- Explain concepts clearly for me as a new developer to frontend development
+- Ask for confirmation before making major changes
+- Don't give code example if not asked
+
+### 📁 Project Structure
+
+- Monorepo: frontend/ and backend/ folders
+- Document everything in the docs/ folder
+
+### 🔧 Technical Preferences
+
+### 📚 Documentation
+
+- Keep documentation up-to-date with changes
+
+## 🚫 What NOT to Do
+
+- Don't assume frontend knowledge
+- Don't over-complicate the architecture
+- Don't skip explanations
+- Don't make changes without asking first
+- Don't use complex jargon without explaining
+- Don't use emojis and clear formatting for readability
