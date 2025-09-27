@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import TodoForm from '@/components/TodoForm'
+import TodoList from '@/components/TodoList'
 
 interface Todo {
   id: string
@@ -29,6 +30,18 @@ export default function HomePage() {
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     )
+  }
+
+  const handleEditTodo = (id: string, newText: string) => {
+    setTodos(prev => 
+      prev.map(todo => 
+        todo.id === id ? { ...todo, text: newText } : todo
+      )
+    )
+  }
+
+  const handleDeleteTodo = (id: string) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id))
   }
 
   const completedCount = todos.filter(todo => todo.completed).length
@@ -75,30 +88,12 @@ export default function HomePage() {
       </div>
 
       {/* Todo List */}
-      {todos.length > 0 && (
-        <div className="garden-card p-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            Today's Tasks ({completedCount}/{totalCount})
-          </h3>
-          <div className="space-y-3">
-            {todos.map(todo => (
-              <div key={todo.id} className="todo-item">
-                <div className="flex items-center space-x-3">
-                  <input 
-                    type="checkbox" 
-                    checked={todo.completed}
-                    onChange={() => handleToggleTodo(todo.id)}
-                    className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
-                  />
-                  <span className={`text-gray-700 ${todo.completed ? 'line-through text-gray-500' : ''}`}>
-                    {todo.text}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <TodoList
+        todos={todos}
+        onToggle={handleToggleTodo}
+        onEdit={handleEditTodo}
+        onDelete={handleDeleteTodo}
+      />
 
       {/* Add Todo Form */}
       <TodoForm onAddTodo={handleAddTodo} />
