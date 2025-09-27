@@ -1,5 +1,6 @@
 'use client'
 
+import { motion, AnimatePresence } from 'framer-motion'
 import TodoItem from './TodoItem'
 
 interface Todo {
@@ -69,17 +70,20 @@ export default function TodoList({ todos, onToggle, onEdit, onDeleteConfirm }: T
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${(completedCount / totalCount) * 100}%` }}
-            ></div>
+            <motion.div 
+              className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${(completedCount / totalCount) * 100}%` }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            ></motion.div>
           </div>
         </div>
       )}
 
       {/* Todo items */}
       <div className="space-y-1">
-        {sortedTodos.map(todo => (
+        <AnimatePresence mode="popLayout">
+          {sortedTodos.map(todo => (
             <TodoItem
               key={todo.id}
               todo={todo}
@@ -87,7 +91,8 @@ export default function TodoList({ todos, onToggle, onEdit, onDeleteConfirm }: T
               onEdit={onEdit}
               onDeleteConfirm={onDeleteConfirm}
             />
-        ))}
+          ))}
+        </AnimatePresence>
       </div>
 
       {/* Footer with encouragement */}

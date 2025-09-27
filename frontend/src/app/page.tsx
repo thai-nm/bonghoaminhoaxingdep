@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import TodoForm from '@/components/TodoForm'
 import TodoList from '@/components/TodoList'
 
@@ -82,13 +83,24 @@ export default function HomePage() {
         
         {/* Growth Visualization */}
         <div className="flex justify-center mb-6">
-          <div className="text-6xl animate-grow">
+          <motion.div 
+            className="text-6xl"
+            key={completionPercentage}
+            initial={{ scale: 0.8, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 200, 
+              damping: 15,
+              duration: 0.6 
+            }}
+          >
             {completionPercentage === 0 ? '🌱' :
              completionPercentage < 20 ? '🌱' :
              completionPercentage < 40 ? '🌿' :
              completionPercentage < 60 ? '🌳' :
              completionPercentage < 80 ? '🌲' : '🌸'}
-          </div>
+          </motion.div>
         </div>
         
         {totalCount > 0 && (
@@ -130,9 +142,22 @@ export default function HomePage() {
       <TodoForm onAddTodo={handleAddTodo} />
 
       {/* Delete Confirmation Modal */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
-          <div className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl">
+      <AnimatePresence>
+        {deleteConfirm && (
+          <motion.div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div 
+              className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ duration: 0.2 }}
+            >
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               Delete Todo?
             </h3>
@@ -153,14 +178,28 @@ export default function HomePage() {
                 Cancel
               </button>
             </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Reset Confirmation Modal */}
-      {showResetConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
-          <div className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl">
+      <AnimatePresence>
+        {showResetConfirm && (
+          <motion.div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div 
+              className="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-2xl"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ duration: 0.2 }}
+            >
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               Start Fresh?
             </h3>
@@ -181,9 +220,10 @@ export default function HomePage() {
                 Cancel
               </button>
             </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface Todo {
   id: string
@@ -52,8 +53,19 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
   }
 
   return (
-    <div className="todo-item group">
-      <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200">
+    <motion.div 
+      className="todo-item group"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+      transition={{ duration: 0.2 }}
+      layout
+    >
+      <motion.div 
+        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+      >
         {/* Checkbox */}
         <input 
           type="checkbox" 
@@ -63,9 +75,12 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
         />
         
         {/* Todo Content */}
-        <div className="flex-1">
+        <motion.div 
+          className="flex-1"
+          layout
+        >
           {isEditing ? (
-            <input
+            <motion.input
               type="text"
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
@@ -73,13 +88,21 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
               onBlur={handleEdit}
               className="w-full px-2 py-1 border border-green-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
               autoFocus
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.2 }}
             />
           ) : (
-            <span className={`text-gray-700 ${todo.completed ? 'line-through text-gray-500' : ''}`}>
+            <motion.span 
+              className={`text-gray-700 ${todo.completed ? 'line-through text-gray-500' : ''}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {todo.text}
-            </span>
+            </motion.span>
           )}
-        </div>
+        </motion.div>
 
         {/* Action Buttons */}
         {!isEditing && (
@@ -131,8 +154,8 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
             </button>
           </div>
         )}
-      </div>
+      </motion.div>
 
-    </div>
+    </motion.div>
   )
 }
