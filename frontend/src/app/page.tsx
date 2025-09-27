@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import TodoForm from '@/components/TodoForm'
 import TodoList from '@/components/TodoList'
+import { updateTodayRecord } from '@/lib/achievementStorage'
 
 interface Todo {
   id: string
@@ -69,6 +70,13 @@ export default function HomePage() {
   const totalCount = todos.length
   const completionPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
+  // Update achievement tracking whenever todos change
+  useEffect(() => {
+    if (todos.length > 0) {
+      updateTodayRecord(todos)
+    }
+  }, [todos])
+
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
@@ -118,16 +126,26 @@ export default function HomePage() {
           </p>
         )}
 
-        {totalCount > 0 && (
-          <div className="mt-4">
+        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
+          {/* Achievements Link */}
+          <a
+            href="/achievements"
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium"
+          >
+            <span>🏆</span>
+            <span>View Achievements</span>
+          </a>
+          
+          {/* Reset Button */}
+          {totalCount > 0 && (
             <button
               onClick={() => setShowResetConfirm(true)}
               className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors text-sm font-medium"
             >
               🌱 Start Fresh
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Todo List */}
@@ -227,4 +245,3 @@ export default function HomePage() {
     </div>
   )
 }
-
