@@ -35,6 +35,11 @@
       "key": "user_id",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "todo_id",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -209,6 +214,269 @@
         }
       ],
       "description": "User authentication endpoints"
+    },
+    {
+      "name": "Todo Management",
+      "item": [
+        {
+          "name": "Get Today's Todos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos",
+              "host": ["{{base_url}}"],
+              "path": ["todos"]
+            },
+            "description": "Get all todos for today, automatically creates daily record if needed"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Todo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success) {",
+                  "        pm.collectionVariables.set('todo_id', response.data.id);",
+                  "        pm.test('Todo created successfully', () => {",
+                  "            pm.expect(response.data.text).to.eql('Test todo item');",
+                  "            pm.expect(response.data.completed).to.be.false;",
+                  "        });",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Test todo item\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos",
+              "host": ["{{base_url}}"],
+              "path": ["todos"]
+            },
+            "description": "Create a new todo item for today"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Todo Text",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Updated todo text\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos/{{todo_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "{{todo_id}}"]
+            },
+            "description": "Update the text of an existing todo"
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Todo",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos/{{todo_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "{{todo_id}}"]
+            },
+            "description": "Mark a todo as completed"
+          },
+          "response": []
+        },
+        {
+          "name": "Uncomplete Todo",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos/{{todo_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "{{todo_id}}"]
+            },
+            "description": "Mark a todo as incomplete"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Todo Text and Status",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Updated and completed todo\",\n  \"completed\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/todos/{{todo_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "{{todo_id}}"]
+            },
+            "description": "Update both text and completion status of a todo"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Todo",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos/{{todo_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "{{todo_id}}"]
+            },
+            "description": "Delete a specific todo item"
+          },
+          "response": []
+        },
+        {
+          "name": "Reset All Todos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/todos/reset",
+              "host": ["{{base_url}}"],
+              "path": ["todos", "reset"]
+            },
+            "description": "Reset all todos for today (mark all as incomplete)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Todo CRUD operations and management"
     },
     {
       "name": "Protected Routes",
