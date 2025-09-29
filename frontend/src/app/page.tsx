@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useAuth } from '@/contexts/AuthContext'
 import TodoForm from '@/components/TodoForm'
 import TodoList from '@/components/TodoList'
 import { updateTodayRecord } from '@/lib/achievementStorage'
@@ -14,6 +15,7 @@ interface Todo {
 }
 
 export default function HomePage() {
+  const { isAuthenticated, isLoading, user } = useAuth()
   const [todos, setTodos] = useState<Todo[]>([])
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; text: string } | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
@@ -77,16 +79,64 @@ export default function HomePage() {
     }
   }, [todos])
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <div className="garden-card p-8 text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-6"></div>
+            <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-6"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show welcome message for unauthenticated users
+  if (!isAuthenticated) {
+    return (
+      <div className="space-y-8">
+        <div className="garden-card p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Welcome to Todo Garden! 🌱
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Transform your daily tasks into a beautiful growing garden. 
+            Every completed task helps your digital garden bloom.
+          </p>
+          
+          <div className="flex justify-center">
+            <motion.div 
+              className="text-6xl"
+              initial={{ scale: 0.8, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 200, 
+                damping: 15,
+                duration: 0.6 
+              }}
+            >
+              🌱
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show todo functionality for authenticated users
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="garden-card p-8 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Welcome to Todo Garden!
+          Welcome back, {user?.username}! 🌱
         </h2>
         <p className="text-gray-600 mb-6">
-          Transform your daily tasks into a beautiful growing garden. 
-          Every completed task helps your digital garden bloom.
+          Ready to grow your garden today? Add some todos and watch your productivity bloom!
         </p>
         
         {/* Growth Visualization */}

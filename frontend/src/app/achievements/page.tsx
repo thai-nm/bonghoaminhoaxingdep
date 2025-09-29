@@ -2,12 +2,58 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useAuth } from '@/contexts/AuthContext'
 import AchievementStats from '@/components/AchievementStats'
 import DailyHistory from '@/components/DailyHistory'
 import { generateDemoData, clearDemoData } from '@/lib/demoData'
 
 export default function AchievementsPage() {
+  const { isAuthenticated, isLoading, user } = useAuth()
   const [activeTab, setActiveTab] = useState<'stats' | 'history'>('stats')
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-pulse">
+            <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-32 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Redirect unauthenticated users
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-md mx-auto p-8"
+        >
+          <div className="text-6xl mb-6">🔒</div>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Authentication Required
+          </h1>
+          <p className="text-gray-600 mb-6">
+            You need to sign in to view your achievements and garden progress.
+          </p>
+          <a
+            href="/"
+            className="inline-flex items-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Go to Sign In</span>
+          </a>
+        </motion.div>
+      </div>
+    )
+  }
 
   const tabs = [
     {

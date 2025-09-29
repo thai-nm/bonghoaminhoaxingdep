@@ -1,10 +1,18 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { createSupabaseClient } from './lib/supabase'
 import { testRoutes } from './routes/test'
 import { authRoutes } from './routes/auth'
 import { userRoutes } from './routes/user'
 
 const app = new Hono()
+
+// Enable CORS for all origins
+app.use('*', cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')

@@ -10,6 +10,6 @@
     "SUPABASE_URL": "https://bvpceknjihwbqyrugyla.supabase.co",
     "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2cGNla25qaWh3YnF5cnVneWxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwMDE5MjQsImV4cCI6MjA3NDU3NzkyNH0.q5VPItUD6G9HNYMTnLVc-R1uuDZrP9cOGjTzzEZcP1Q",
     "JWT_SECRET": "secretjwtformyapp",
-    "CORS_ORIGIN": "http://localhost:3000"
+    "CORS_ORIGIN": "*"
   }
 }
