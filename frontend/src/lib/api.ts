@@ -1,6 +1,15 @@
 // API client for Todo Garden backend communication
 
 import { LoginCredentials, RegisterCredentials, AuthResponse, User, ApiError } from '@/types/auth'
+import { 
+  TodosResponse, 
+  TodoResponse, 
+  DeleteTodoResponse, 
+  ResetTodosResponse,
+  CreateTodoRequest,
+  UpdateTodoRequest,
+  BackendTodo
+} from '@/types/todo'
 
 // Backend API base URL - update this to match your backend deployment
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:49465'
@@ -168,6 +177,38 @@ class ApiClient {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('refresh_token')
     }
+  }
+
+  // Todo endpoints
+  async getTodos(): Promise<TodosResponse> {
+    return this.request<TodosResponse>('/todos')
+  }
+
+  async createTodo(text: string): Promise<TodoResponse> {
+    const request: CreateTodoRequest = { text }
+    return this.request<TodoResponse>('/todos', {
+      method: 'POST',
+      body: JSON.stringify(request),
+    })
+  }
+
+  async updateTodo(id: string, updates: UpdateTodoRequest): Promise<TodoResponse> {
+    return this.request<TodoResponse>(`/todos/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    })
+  }
+
+  async deleteTodo(id: string): Promise<DeleteTodoResponse> {
+    return this.request<DeleteTodoResponse>(`/todos/${id}`, {
+      method: 'DELETE',
+    })
+  }
+
+  async resetTodos(): Promise<ResetTodosResponse> {
+    return this.request<ResetTodosResponse>('/todos/reset', {
+      method: 'DELETE',
+    })
   }
 }
 

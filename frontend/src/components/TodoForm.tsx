@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface TodoFormProps {
-  onAddTodo: (text: string) => void
+  onAddTodo: (text: string) => Promise<void>
 }
 
 export default function TodoForm({ onAddTodo }: TodoFormProps) {
@@ -23,7 +23,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
     
     try {
       // Add the todo
-      onAddTodo(trimmedValue)
+      await onAddTodo(trimmedValue)
       
       // Clear the input
       setInputValue('')

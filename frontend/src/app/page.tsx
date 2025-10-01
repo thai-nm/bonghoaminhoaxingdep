@@ -5,50 +5,152 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
 import TodoForm from '@/components/TodoForm'
 import TodoList from '@/components/TodoList'
-import { updateTodayRecord } from '@/lib/achievementStorage'
-
-interface Todo {
-  id: string
-  text: string
-  completed: boolean
-  createdAt: Date
-}
+import { 
+  todoService, 
+  createInitialLoadingState, 
+  getErrorMessage 
+} from '@/lib/todoService'
+import { Todo, TodoLoadingState, TodoError, DailyRecord } from '@/types/todo'
 
 export default function HomePage() {
   const { isAuthenticated, isLoading, user } = useAuth()
   const [todos, setTodos] = useState<Todo[]>([])
+  const [dailyRecord, setDailyRecord] = useState<DailyRecord | null>(null)
+  const [loadingState, setLoadingState] = useState<TodoLoadingState>(createInitialLoadingState())
+  const [error, setError] = useState<TodoError | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; text: string } | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
 
-  const handleAddTodo = (text: string) => {
-    const newTodo: Todo = {
-      id: Date.now().toString(),
-      text,
-      completed: false,
-      createdAt: new Date()
+  // Fetch todos when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      fetchTodos()
     }
-    setTodos(prev => [...prev, newTodo])
+  }, [isAuthenticated, isLoading])
+
+  const fetchTodos = async () => {
+    setLoadingState(prev => ({ ...prev, isLoading: true }))
+    setError(null)
+    
+    try {
+      const result = await todoService.fetchTodos()
+      setTodos(result.todos)
+      setDailyRecord(result.dailyRecord)
+    } catch (err) {
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isLoading: false }))
+    }
   }
 
-  const handleToggleTodo = (id: string) => {
+  const handleAddTodo = async (text: string) => {
+    setLoadingState(prev => ({ ...prev, isCreating: true }))
+    setError(null)
+    
+    try {
+      const newTodo = await todoService.createTodo(text)
+      setTodos(prev => [...prev, newTodo])
+      // Refresh to get updated daily record stats
+      await fetchTodos()
+    } catch (err) {
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isCreating: false }))
+    }
+  }
+
+  const handleToggleTodo = async (id: string) => {
+    const todo = todos.find(t => t.id === id)
+    if (!todo) return
+
+    setLoadingState(prev => ({ ...prev, isUpdating: id }))
+    setError(null)
+    
+    // Optimistic update
+    const newCompleted = !todo.completed
     setTodos(prev => 
-      prev.map(todo => 
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      prev.map(t => 
+        t.id === id ? { ...t, completed: newCompleted } : t
       )
     )
+    
+    try {
+      const updatedTodo = await todoService.toggleTodoCompletion(id, newCompleted)
+      setTodos(prev => 
+        prev.map(t => t.id === id ? updatedTodo : t)
+      )
+      // Refresh to get updated daily record stats
+      await fetchTodos()
+    } catch (err) {
+      // Rollback optimistic update
+      setTodos(prev => 
+        prev.map(t => 
+          t.id === id ? { ...t, completed: todo.completed } : t
+        )
+      )
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isUpdating: null }))
+    }
   }
 
-  const handleEditTodo = (id: string, newText: string) => {
+  const handleEditTodo = async (id: string, newText: string) => {
+    const todo = todos.find(t => t.id === id)
+    if (!todo || newText.trim() === '') return
+
+    setLoadingState(prev => ({ ...prev, isUpdating: id }))
+    setError(null)
+    
+    // Optimistic update
+    const oldText = todo.text
     setTodos(prev => 
-      prev.map(todo => 
-        todo.id === id ? { ...todo, text: newText } : todo
+      prev.map(t => 
+        t.id === id ? { ...t, text: newText } : t
       )
     )
+    
+    try {
+      const updatedTodo = await todoService.updateTodoText(id, newText)
+      setTodos(prev => 
+        prev.map(t => t.id === id ? updatedTodo : t)
+      )
+    } catch (err) {
+      // Rollback optimistic update
+      setTodos(prev => 
+        prev.map(t => 
+          t.id === id ? { ...t, text: oldText } : t
+        )
+      )
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isUpdating: null }))
+    }
   }
 
-  const handleDeleteTodo = (id: string) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id))
+  const handleDeleteTodo = async (id: string) => {
+    setLoadingState(prev => ({ ...prev, isDeleting: id }))
+    setError(null)
+    
+    // Optimistic update
+    const todoToDelete = todos.find(t => t.id === id)
+    setTodos(prev => prev.filter(t => t.id !== id))
     setDeleteConfirm(null)
+    
+    try {
+      await todoService.deleteTodo(id)
+      // Refresh to get updated daily record stats
+      await fetchTodos()
+    } catch (err) {
+      // Rollback optimistic update
+      if (todoToDelete) {
+        setTodos(prev => [...prev, todoToDelete].sort((a, b) => 
+          a.createdAt.getTime() - b.createdAt.getTime()
+        ))
+      }
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isDeleting: null }))
+    }
   }
 
   const handleDeleteConfirm = (id: string, text: string) => {
@@ -59,9 +161,26 @@ export default function HomePage() {
     setDeleteConfirm(null)
   }
 
-  const handleReset = () => {
+  const handleReset = async () => {
+    setLoadingState(prev => ({ ...prev, isResetting: true }))
+    setError(null)
+    
+    // Optimistic update
+    const oldTodos = [...todos]
     setTodos([])
     setShowResetConfirm(false)
+    
+    try {
+      await todoService.resetTodos()
+      // Refresh to get updated data
+      await fetchTodos()
+    } catch (err) {
+      // Rollback optimistic update
+      setTodos(oldTodos)
+      setError(err as TodoError)
+    } finally {
+      setLoadingState(prev => ({ ...prev, isResetting: false }))
+    }
   }
 
   const handleResetCancel = () => {
@@ -72,12 +191,6 @@ export default function HomePage() {
   const totalCount = todos.length
   const completionPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
-  // Update achievement tracking whenever todos change
-  useEffect(() => {
-    if (todos.length > 0) {
-      updateTodayRecord(todos)
-    }
-  }, [todos])
 
   // Show loading state
   if (isLoading) {
