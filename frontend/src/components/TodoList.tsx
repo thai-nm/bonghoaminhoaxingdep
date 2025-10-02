@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import TodoItem from './TodoItem'
-import TulipGrowth from './TulipGrowth'
 
 interface Todo {
   id: string
@@ -48,28 +47,13 @@ export default function TodoList({ todos, onToggle, onEdit, onDeleteConfirm }: T
 
   return (
     <div className="garden-card p-6">
-      {/* Header with progress */}
+      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xl font-semibold text-gray-800">
           Today's Tasks
         </h3>
-        <div className="text-sm text-gray-600">
-          <span className="font-medium text-green-600">{completedCount}</span>
-          <span className="text-gray-400"> / </span>
-          <span className="font-medium">{totalCount}</span>
-          <span className="text-gray-500 ml-1">completed</span>
-        </div>
       </div>
 
-      {/* Tulip Growth Visualization */}
-      {totalCount > 0 && (
-        <div className="mb-6">
-          <TulipGrowth 
-            completedCount={completedCount} 
-            totalCount={totalCount} 
-          />
-        </div>
-      )}
 
       {/* Todo items */}
       <div className="space-y-1">

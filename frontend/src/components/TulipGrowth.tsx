@@ -37,19 +37,6 @@ export default function TulipGrowth({ completedCount, totalCount }: TulipGrowthP
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      {/* Progress text */}
-      <div className="text-center">
-        <div className="text-sm text-gray-600 mb-1">
-          <span className="font-medium text-green-600">{completedCount}</span>
-          <span className="text-gray-400"> / </span>
-          <span className="font-medium">{totalCount}</span>
-          <span className="text-gray-500 ml-1">completed</span>
-        </div>
-        <div className="text-xs text-gray-500">
-          {Math.round(progressPercentage)}% - Your tulip is growing!
-        </div>
-      </div>
-
       {/* Tulip sprite container */}
       <div className="relative">
         <motion.div
@@ -57,7 +44,7 @@ export default function TulipGrowth({ completedCount, totalCount }: TulipGrowthP
           style={{
             width: `${spriteWidth}px`,
             height: `${spriteHeight}px`,
-            backgroundImage: 'url(/tulip-flower-spritesheet-03.png)',
+            backgroundImage: 'url(/tulip-flower-spritesheet-04.png)',
             backgroundPosition: `-${currentStage * spriteWidth}px 0px`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: `${spriteWidth * totalFrames}px ${spriteHeight}px`,

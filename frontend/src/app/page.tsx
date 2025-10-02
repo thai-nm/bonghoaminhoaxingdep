@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
 import TodoForm from '@/components/TodoForm'
 import TodoList from '@/components/TodoList'
+import TulipGrowth from '@/components/TulipGrowth'
 import { 
   todoService, 
   createInitialLoadingState, 
@@ -252,34 +253,13 @@ export default function HomePage() {
           Ready to grow your garden today? Add some todos and watch your productivity bloom!
         </p>
         
-        {/* Growth Visualization */}
-        <div className="flex justify-center mb-6">
-          <motion.div 
-            className="text-6xl"
-            key={completionPercentage}
-            initial={{ scale: 0.8, rotate: -10 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 200, 
-              damping: 15,
-              duration: 0.6 
-            }}
-          >
-            {completionPercentage === 0 ? '🌱' :
-             completionPercentage < 20 ? '🌱' :
-             completionPercentage < 40 ? '🌿' :
-             completionPercentage < 60 ? '🌳' :
-             completionPercentage < 80 ? '🌲' : '🌸'}
-          </motion.div>
-        </div>
-        
+        {/* Tulip Growth Visualization */}
         {totalCount > 0 && (
-          <div className="text-sm text-gray-600">
-            <p>Progress: {completedCount}/{totalCount} tasks completed</p>
-            <p className="text-green-600 font-medium">
-              {Math.round(completionPercentage)}% complete
-            </p>
+          <div className="mb-6">
+            <TulipGrowth 
+              completedCount={completedCount} 
+              totalCount={totalCount} 
+            />
           </div>
         )}
         
