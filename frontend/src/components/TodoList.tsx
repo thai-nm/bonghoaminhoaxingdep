@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import TodoItem from './TodoItem'
+import TulipGrowth from './TulipGrowth'
 
 interface Todo {
   id: string
@@ -60,23 +61,13 @@ export default function TodoList({ todos, onToggle, onEdit, onDeleteConfirm }: T
         </div>
       </div>
 
-      {/* Progress bar */}
+      {/* Tulip Growth Visualization */}
       {totalCount > 0 && (
         <div className="mb-6">
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-            <span>Progress</span>
-            <span className="font-medium">
-              {Math.round((completedCount / totalCount) * 100)}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <motion.div 
-              className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${(completedCount / totalCount) * 100}%` }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            ></motion.div>
-          </div>
+          <TulipGrowth 
+            completedCount={completedCount} 
+            totalCount={totalCount} 
+          />
         </div>
       )}
 

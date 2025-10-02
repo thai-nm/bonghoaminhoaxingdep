@@ -1,0 +1,108 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+
+interface TulipGrowthProps {
+  completedCount: number
+  totalCount: number
+}
+
+export default function TulipGrowth({ completedCount, totalCount }: TulipGrowthProps) {
+  const [currentStage, setCurrentStage] = useState(0)
+
+  // Calculate progress percentage
+  const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
+
+  // Determine tulip growth stage based on progress
+  // Using 4 phases from the spritesheet (0-3)
+  useEffect(() => {
+    if (progressPercentage === 0) {
+      setCurrentStage(0) // First phase
+    } else if (progressPercentage <= 33) {
+      setCurrentStage(1) // Second phase
+    } else if (progressPercentage <= 66) {
+      setCurrentStage(2) // Third phase
+    } else {
+      setCurrentStage(3) // Final phase - full bloom
+    }
+  }, [progressPercentage])
+
+  // Spritesheet configuration for tulip-flower-spritesheet-03.png
+  // Image dimensions: 612 x 408
+  // Assuming 4 frames horizontally (612/4 = 153px per frame)
+  const spriteWidth = 153 // Width of each sprite frame (612/4)
+  const spriteHeight = 408 // Height of the sprite frame
+  const totalFrames = 4 // Total number of growth phases
+
+  return (
+    <div className="flex flex-col items-center space-y-4">
+      {/* Progress text */}
+      <div className="text-center">
+        <div className="text-sm text-gray-600 mb-1">
+          <span className="font-medium text-green-600">{completedCount}</span>
+          <span className="text-gray-400"> / </span>
+          <span className="font-medium">{totalCount}</span>
+          <span className="text-gray-500 ml-1">completed</span>
+        </div>
+        <div className="text-xs text-gray-500">
+          {Math.round(progressPercentage)}% - Your tulip is growing!
+        </div>
+      </div>
+
+      {/* Tulip sprite container */}
+      <div className="relative">
+        <motion.div
+          className="tulip-sprite"
+          style={{
+            width: `${spriteWidth}px`,
+            height: `${spriteHeight}px`,
+            backgroundImage: 'url(/tulip-flower-spritesheet-03.png)',
+            backgroundPosition: `-${currentStage * spriteWidth}px 0px`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: `${spriteWidth * totalFrames}px ${spriteHeight}px`,
+            imageRendering: 'pixelated', // For crisp pixel art
+          }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          key={currentStage} // Re-animate when stage changes
+        />
+
+        {/* Sparkle effect when fully grown */}
+        {currentStage === 3 && (
+          <motion.div
+            className="absolute -top-2 -right-2 text-yellow-400"
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{ scale: [0, 1.2, 1], rotate: [0, 180, 360] }}
+            transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}
+          >
+            ✨
+          </motion.div>
+        )}
+      </div>
+
+      {/* Growth stage description */}
+      <div className="text-center">
+        <p className="text-xs text-gray-500">
+          {getStageDescription(currentStage, progressPercentage)}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function getStageDescription(stage: number, progress: number): string {
+  switch (stage) {
+    case 0:
+      return "Plant your first seed by completing a task!"
+    case 1:
+      return "A tiny sprout appears! Keep going!"
+    case 2:
+      return "Your tulip is growing beautifully!"
+    case 3:
+      return "🌷 Your tulip is in full bloom! Beautiful work!"
+    default:
+      return `${Math.round(progress)}% complete`
+  }
+}
