@@ -56,7 +56,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
         <button 
           type="submit"
           disabled={!inputValue.trim() || isSubmitting}
-          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center space-x-2"
+          className="px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors disabled:bg-pink-400 disabled:cursor-not-allowed flex items-center space-x-2"
         >
           {isSubmitting ? (
             <>
@@ -65,7 +65,7 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
             </>
           ) : (
             <>
-              <span>🌱</span>
+              <span>🌸</span>
               <span>Add Task</span>
             </>
           )}

@@ -291,6 +291,9 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Add Todo Form */}
+      <TodoForm onAddTodo={handleAddTodo} />
+
       {/* Todo List */}
       <TodoList
         todos={todos}
@@ -298,9 +301,6 @@ export default function HomePage() {
         onEdit={handleEditTodo}
         onDeleteConfirm={handleDeleteConfirm}
       />
-
-      {/* Add Todo Form */}
-      <TodoForm onAddTodo={handleAddTodo} />
 
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
