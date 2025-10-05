@@ -1,6 +1,6 @@
 [env.production]
-name = "todo-garden-frontend"
-compatibility_date = "2024-01-01"
+name = "bonghoaminhoaxingdep-frontend"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 
@@ -13,8 +13,8 @@ NEXT_PUBLIC_API_URL = "https://api.bonghoaminhoaxingdep.thainm.me"
 
 # For development/preview
 [env.preview]
-name = "todo-garden-frontend-preview"
-compatibility_date = "2024-01-01"
+name = "bonghoaminhoaxingdep-frontend-preview"
+compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
 
