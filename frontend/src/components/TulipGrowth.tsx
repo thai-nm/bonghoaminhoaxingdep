@@ -28,26 +28,23 @@ export default function TulipGrowth({ completedCount, totalCount }: TulipGrowthP
     }
   }, [progressPercentage])
 
-  // Spritesheet configuration for tulip-flower-spritesheet-03.png
-  // Image dimensions: 612 x 408
-  // Assuming 4 frames horizontally (612/4 = 153px per frame)
-  const spriteWidth = 153 // Width of each sprite frame (612/4)
-  const spriteHeight = 408 // Height of the sprite frame
-  const totalFrames = 4 // Total number of growth phases
+  // Individual tulip images configuration
+  // Using tulip-000.png to tulip-003.png (4 growth stages)
+  const getTulipImage = (stage: number): string => {
+    return `/tulip-00${stage}.png`
+  }
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      {/* Tulip sprite container */}
+      {/* Tulip image container */}
       <div className="relative">
-        <motion.div
-          className="tulip-sprite"
+        <motion.img
+          src={getTulipImage(currentStage)}
+          alt={`Tulip growth stage ${currentStage + 1}`}
+          className="tulip-image"
           style={{
-            width: `${spriteWidth}px`,
-            height: `${spriteHeight}px`,
-            backgroundImage: 'url(/tulip-flower-spritesheet-04.png)',
-            backgroundPosition: `-${currentStage * spriteWidth}px 0px`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: `${spriteWidth * totalFrames}px ${spriteHeight}px`,
+            width: 'auto',
+            height: '200px', // Fixed height for consistency
             imageRendering: 'pixelated', // For crisp pixel art
           }}
           initial={{ scale: 0.8, opacity: 0 }}

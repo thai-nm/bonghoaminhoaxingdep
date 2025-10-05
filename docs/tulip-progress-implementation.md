@@ -26,12 +26,12 @@ The Todo Garden application now uses a tulip flower spritesheet-based progress v
 
 4. **Progress Text**: Shows completion count and percentage alongside the visual
 
-### Spritesheet Configuration
+### Image Configuration
 
-- **File**: `tulip-flower-spritesheet-04.png`
-- **Dimensions**: 612 x 408 pixels
-- **Frame Size**: 153 x 408 pixels (4 frames horizontally)
-- **Location**: `frontend/public/tulip-flower-spritesheet-04.png`
+- **Files**: Individual tulip images `tulip-000.png` to `tulip-003.png`
+- **Format**: 4 separate PNG files for each growth stage
+- **Location**: `frontend/public/tulip-000.png` through `frontend/public/tulip-003.png`
+- **Rendering**: Fixed height (200px) with auto width for consistent display
 
 ### Integration
 
@@ -61,7 +61,8 @@ interface TulipGrowthProps {
 ### Styling Features
 
 - **Responsive Design**: Centers the tulip and scales appropriately
-- **Pixel Art Rendering**: Uses `imageRendering: 'pixelated'` for crisp sprite display
+- **Pixel Art Rendering**: Uses `imageRendering: 'pixelated'` for crisp image display
+- **Fixed Height**: Consistent 200px height with auto width for proper aspect ratio
 - **Garden Theme**: Consistent with the overall garden aesthetic of the application
 
 ## Benefits
