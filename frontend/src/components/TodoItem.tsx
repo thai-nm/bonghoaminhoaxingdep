@@ -53,32 +53,30 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
   }
 
   return (
-    <motion.div 
+    <motion.div
       className="todo-item group"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      layout
     >
-      <motion.div 
-        className="flex items-center space-x-3 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+      <motion.div
+        className="flex items-center space-x-2 p-1 rounded-lg hover:bg-green-50 transition-colors duration-200 cursor-pointer"
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.2 }}
+        onDoubleClick={() => setIsEditing(true)}
+        title="Double-click to edit"
       >
         {/* Checkbox */}
-        <input 
-          type="checkbox" 
+        <input
+          type="checkbox"
           checked={todo.completed}
           onChange={() => onToggle(todo.id)}
-          className="w-4 h-4 text-green-600 rounded focus:ring-green-500 focus:ring-2"
+          className="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-500 focus:ring-2 accent-green-600"
         />
-        
+
         {/* Todo Content */}
-        <motion.div 
-          className="flex-1"
-          layout
-        >
+        <div className="flex-1">
           {isEditing ? (
             <motion.input
               type="text"
@@ -93,16 +91,16 @@ export default function TodoItem({ todo, onToggle, onEdit, onDeleteConfirm }: To
               transition={{ duration: 0.2 }}
             />
           ) : (
-            <motion.span 
+            <motion.span
               className={`text-gray-700 ${todo.completed ? 'line-through text-gray-500' : ''}`}
-              initial={{ opacity: 0 }}
+              initial={todo.completed ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+              transition={todo.completed ? { duration: 0 } : { duration: 0.3 }}
             >
               {todo.text}
             </motion.span>
           )}
-        </motion.div>
+        </div>
 
         {/* Action Buttons */}
         {!isEditing && (

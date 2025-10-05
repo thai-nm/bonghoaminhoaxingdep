@@ -19,7 +19,7 @@ export default function RootLayout({
         <AuthProvider>
           <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
             <Header />
-            <main className="max-w-4xl mx-auto px-4 py-8">
+            <main className="py-8 px-8">
               {children}
             </main>
           </div>
