@@ -16,9 +16,9 @@ The Todo Garden application now uses a tulip flower spritesheet-based progress v
 
 1. **4 Growth Stages**: The tulip progresses through 4 distinct visual stages:
    - Stage 0 (0%): Seed/empty soil - "Plant your first seed by completing a task!"
-   - Stage 1 (1-33%): Small sprout - "A tiny sprout appears! Keep going!"
-   - Stage 2 (34-66%): Growing tulip - "Your tulip is growing beautifully!"
-   - Stage 3 (67-100%): Full bloom - "🌷 Your tulip is in full bloom! Beautiful work!"
+   - Stage 1 (1-49%): Small sprout - "A tiny sprout appears! Keep going!"
+   - Stage 2 (50-99%): Growing tulip - "Your tulip is growing beautifully!"
+   - Stage 3 (100%): Full bloom - "🌷 Your tulip is in full bloom! Beautiful work!"
 
 2. **Smooth Animations**: Uses Framer Motion for smooth transitions between stages
 

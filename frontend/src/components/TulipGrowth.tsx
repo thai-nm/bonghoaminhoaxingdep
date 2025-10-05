@@ -15,16 +15,16 @@ export default function TulipGrowth({ completedCount, totalCount }: TulipGrowthP
   const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
 
   // Determine tulip growth stage based on progress
-  // Using 4 phases from the spritesheet (0-3)
+  // Using 4 phases (0-3) - full bloom only at 100% completion
   useEffect(() => {
     if (progressPercentage === 0) {
-      setCurrentStage(0) // First phase
-    } else if (progressPercentage <= 33) {
-      setCurrentStage(1) // Second phase
-    } else if (progressPercentage <= 66) {
-      setCurrentStage(2) // Third phase
+      setCurrentStage(0) // First phase - no tasks completed
+    } else if (progressPercentage <= 50) {
+      setCurrentStage(1) // Second phase - less than half completed
+    } else if (progressPercentage < 100) {
+      setCurrentStage(2) // Third phase - more than half but not all completed
     } else {
-      setCurrentStage(3) // Final phase - full bloom
+      setCurrentStage(3) // Final phase - full bloom only when ALL tasks completed
     }
   }, [progressPercentage])
 

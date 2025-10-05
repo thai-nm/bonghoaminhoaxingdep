@@ -317,9 +317,9 @@
 - **Individual Image Animation**: Professional pixel art rendering with 4 growth stages
 - **Progress Mapping**: Intelligent stage calculation based on completion percentage
   - Stage 0 (0%): "Plant your first seed by completing a task!"
-  - Stage 1 (1-33%): "A tiny sprout appears! Keep going!"
-  - Stage 2 (34-66%): "Your tulip is growing beautifully!"
-  - Stage 3 (67-100%): "🌷 Your tulip is in full bloom! Beautiful work!"
+  - Stage 1 (1-49%): "A tiny sprout appears! Keep going!"
+  - Stage 2 (50-99%): "Your tulip is growing beautifully!"
+  - Stage 3 (100%): "🌷 Your tulip is in full bloom! Beautiful work!"
 - **Visual Effects**: Sparkle animation when tulip reaches full bloom
 - **Smooth Transitions**: Framer Motion animations between growth stages
 - **Pixel Perfect**: Crisp sprite rendering with proper image scaling
