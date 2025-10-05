@@ -4,6 +4,7 @@ node_modules/
 
 # Production builds
 .next/
+.open-next/
 dist/
 build/
 

@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
     domains: [],
   },
+  output: 'standalone',
+  trailingSlash: false,
 }
 
 module.exports = nextConfig
