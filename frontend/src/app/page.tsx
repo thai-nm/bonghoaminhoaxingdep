@@ -35,7 +35,7 @@ export default function HomePage() {
   const fetchQuote = async () => {
     setQuoteLoading(true)
     try {
-      const response = await fetch('https://api.quotable.io/quotes/random')
+      const response = await fetch('http://api.quotable.io/quotes/random')
       const data = await response.json()
       if (data && data.length > 0) {
         setQuote({
