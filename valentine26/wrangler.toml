@@ -1,0 +1,6 @@
+name = "valentine26"
+pages_build_output_dir = "."
+
+[site]
+bucket = "."
+entry-point = "workers-site"
