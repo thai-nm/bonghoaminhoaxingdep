@@ -8,7 +8,7 @@
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd valentine26
+   cd valentine2026
    ```
 
 2. Open `index.html` in your favorite web browser.
