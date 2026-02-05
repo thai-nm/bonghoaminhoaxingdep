@@ -1,3 +1,3 @@
 # bonghoaminhoaxingdep
 
-A simple to-do list app for my girlfriend
+A list of fun apps I made for my lovely girl friend!
