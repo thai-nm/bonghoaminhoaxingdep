@@ -11,22 +11,22 @@ let yesScale = 1;
 let noClickCount = 0;
 
 const NO_MESSAGES = [
-    "No",
-    "Are you sure?",
-    "Pookie please",
-    "Don't do this to me",
-    "You're breaking my heart",
-    "I'm gonna cry...",
-    "Why must you be so cruel?",
-    "But I love you!",
-    "Is that your final answer?",
+    "Khum",
+    "Câu trả lời của em thật sự là z sao?",
+    "Em chắc chưa?",
+    "Thật sự là chắc rùi sao?",
+    "Đừng làm thế mò",
+    "Anh bẩu là đừng làm thế mà!",
+    "Anh khóc giờ em ...",
+    "Hmu hmu sao ác quá z em",
     "Really?",
-    "Think again!",
-    "I'll be very sad",
-    "Give me a chance!",
-    "Okay, now you're just being mean",
-    "I'm still waiting...",
-    "Just click Yes already!"
+    "Em được anh tặng một cơ hội làm lại",
+    "Em nghĩ lại đi",
+    "Please ...",
+    "Thôi em ấn Đồng ý đi!",
+    "Đã bảo là ấn Đồng ý đi màaaa",
+    "Đồng ý!",
+    "Đồng ý điiiiii"
 ];
 
 const SUCCESS_GIF_URL = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2NsOWJtbzVndmFnZnQyc3Boc2M0ZXFnYWx2ejdtOXMyN3B6Y3BvbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8QbwUh40Hl96yMgvOx/giphy.gif";
