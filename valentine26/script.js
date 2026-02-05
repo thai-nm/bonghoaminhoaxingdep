@@ -8,8 +8,28 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let yesScale = 1;
-const NO_BUTTON_MOVE_DISTANCE = 150;
-const GIF_URL = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2NsOWJtbzVndmFnZnQyc3Boc2M0ZXFnYWx2ejdtOXMyN3B6Y3BvbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8QbwUh40Hl96yMgvOx/giphy.gif";
+let noClickCount = 0;
+
+const NO_MESSAGES = [
+    "No",
+    "Are you sure?",
+    "Pookie please",
+    "Don't do this to me",
+    "You're breaking my heart",
+    "I'm gonna cry...",
+    "Why must you be so cruel?",
+    "But I love you!",
+    "Is that your final answer?",
+    "Really?",
+    "Think again!",
+    "I'll be very sad",
+    "Give me a chance!",
+    "Okay, now you're just being mean",
+    "I'm still waiting...",
+    "Just click Yes already!"
+];
+
+const SUCCESS_GIF_URL = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2NsOWJtbzVndmFnZnQyc3Boc2M0ZXFnYWx2ejdtOXMyN3B6Y3BvbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8QbwUh40Hl96yMgvOx/giphy.gif";
 
 // Resize canvas
 function resizeCanvas() {
@@ -20,34 +40,20 @@ window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
 // --- No Button Logic ---
-function moveNoButton() {
-    const container = document.getElementById('main-container');
-    const containerRect = container.getBoundingClientRect();
+noBtn.addEventListener('click', () => {
+    noClickCount++;
 
-    // Get button dimensions
-    const btnRect = noBtn.getBoundingClientRect();
+    // Update No button text
+    const messageIndex = Math.min(noClickCount, NO_MESSAGES.length - 1);
+    noBtn.textContent = NO_MESSAGES[messageIndex];
 
-    // Calculate safe boundaries (avoiding going off screen)
-    const maxX = window.innerWidth - btnRect.width - 20;
-    const maxY = window.innerHeight - btnRect.height - 20;
+    // Make Yes button grow
+    yesScale += 0.2;
+    yesBtn.style.transform = `scale(${yesScale})`;
 
-    // Random position
-    let newX = Math.random() * maxX;
-    let newY = Math.random() * maxY;
-
-    // Simple check to ensure it doesn't just stay in the same place
-    noBtn.style.position = 'fixed';
-    noBtn.style.left = `${newX}px`;
-    noBtn.style.top = `${newY}px`;
-}
-
-// Move on mouse over (desktop)
-noBtn.addEventListener('mouseover', moveNoButton);
-
-// Move on click (mobile/fallback)
-noBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    moveNoButton();
+    // Add some extra space around the growing button
+    const padding = 20 * yesScale;
+    buttonsContainer.style.gap = `${padding}px`;
 });
 
 // --- Yes Button Logic ---
@@ -57,17 +63,11 @@ yesBtn.addEventListener('click', () => {
     buttonsContainer.classList.add('hidden');
 
     // Show success
-    successGif.src = GIF_URL;
+    successGif.src = SUCCESS_GIF_URL;
     successContainer.classList.remove('hidden');
 
     // Start celebration
     startCelebration();
-});
-
-// Make "Yes" grow on each attempt at "No"
-noBtn.addEventListener('mouseover', () => {
-    yesScale += 0.15;
-    yesBtn.style.transform = `scale(${yesScale})`;
 });
 
 // --- Celebration Animation (Hearts) ---

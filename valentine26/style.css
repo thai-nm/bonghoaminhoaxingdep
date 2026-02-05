@@ -54,10 +54,10 @@ h1 {
 
 .buttons {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
-    flex-wrap: wrap;
     min-height: 100px;
 }
 
@@ -75,6 +75,7 @@ button {
 #yes-btn {
     background-color: var(--primary-color);
     color: var(--white);
+    order: 1;
 }
 
 #yes-btn:hover {
@@ -87,6 +88,7 @@ button {
     color: #495057;
     position: relative;
     z-index: 10;
+    order: 2;
 }
 
 #no-btn:hover {
@@ -128,7 +130,6 @@ button {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -140,7 +141,6 @@ button {
     .container {
         padding: 1.5rem;
     }
-
     h1 {
         font-size: 1.5rem;
     }
